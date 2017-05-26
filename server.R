@@ -132,7 +132,7 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$hourPlot_brush)) {
       thisSelection <- input$hourPlot_brush
       currentlyFiltred <- currentlyFiltred %>%
-        filter(DHour >= thisSelection$xmin, DHour <= thisSelection$xmax)
+        filter(Hour >= thisSelection$xmin, Hour <= thisSelection$xmax)
       noSelection <- FALSE
     }
     
@@ -247,16 +247,16 @@ shinyServer(function(input, output, session) {
   
   output$hourPlot_debit <- renderPlot({
     hourPlot_data <- trafic_data %>%
-      group_by(DHour) %>%
+      group_by(Hour) %>%
       summarise(meanDebit = mean(Debit, na.rm = TRUE))
     
-    hourPlot <- ggplot(hourPlot_data, aes(DHour, meanDebit)) +
+    hourPlot <- ggplot(hourPlot_data, aes(Hour, meanDebit)) +
       stat_smooth(se = FALSE, geom = "area", fill = "blue", alpha = .35, na.rm = TRUE) +
       theme_minimal()
     
     if (length(filtredSpatialData()) > 1){
       selData <- filtredSpatialData() %>%
-        group_by(DHour) %>%
+        group_by(Hour) %>%
         summarise(meanDebit = mean(Debit, na.rm = TRUE))
       
       hourPlot <- hourPlot +
@@ -267,16 +267,16 @@ shinyServer(function(input, output, session) {
   
   output$hourPlot_occup <- renderPlot({
     hourPlot_data <- trafic_data %>%
-      group_by(DHour) %>%
+      group_by(Hour) %>%
       summarise(meanOccup = mean(TxOccupation, na.rm = TRUE))
     
-    hourPlot <- ggplot(hourPlot_data, aes(DHour, meanOccup)) +
+    hourPlot <- ggplot(hourPlot_data, aes(Hour, meanOccup)) +
       stat_smooth(se = FALSE, geom = "area", fill = "blue", alpha = .35, na.rm = TRUE) +
       theme_minimal()
     
     if (length(filtredSpatialData()) > 1){
       selData <- filtredSpatialData() %>%
-        group_by(DHour) %>%
+        group_by(Hour) %>%
         summarise(meanOccup = mean(TxOccupation, na.rm = TRUE))
       
       hourPlot <- hourPlot +
