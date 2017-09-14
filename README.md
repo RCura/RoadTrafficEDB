@@ -1,6 +1,8 @@
 # RoadTrafficEDB
 ## Interactive exploration of Paris roads traffic
 
+[![DOI](https://zenodo.org/badge/92038023.svg)](https://zenodo.org/badge/latestdoi/92038023)
+
 ### Dependencies
 
 Those packages are needed for the data handling : `tidyverse`, `lubridate`, and `sf`.
