@@ -41,7 +41,8 @@ shinyUI(fluidPage(
     column(3, plotOutput("hourPlot_debit", height = "250px",
                          brush = brushOpts(id = "hourPlot_brush", direction = "x", resetOnNew = FALSE))),
     column(6, plotOutput("timePlot", height = "250px",
-                         brush = brushOpts(id = "timePlot_brush", direction = "x", resetOnNew = FALSE))),
+                         brush = brushOpts(id = "timePlot_brush", direction = "x", resetOnNew = FALSE),
+                         dblclick = "timePlot_dblclick")),
     column(3, plotOutput("hourPlot_occup", height = "250px",
                          brush = brushOpts(id = "hourPlot_brush", direction = "x", resetOnNew = FALSE)))
   )

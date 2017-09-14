@@ -2,6 +2,9 @@
 library(shiny)
 
 shinyServer(function(input, output, session) {
+  plotRange <- reactiveVal(c("2016-01-01 01:00:00 UTC",
+                             "2017-01-01 00:00:00 UTC"))
+  
   output$map <- renderLeaflet({
       pal <- colorNumeric(
         palette = "magma",
@@ -299,7 +302,8 @@ shinyServer(function(input, output, session) {
     timePlot <- ggplot(timePlot_data, aes(Time, Value)) +
       geom_smooth(se = FALSE, col = "blue", alpha = .35, na.rm = TRUE) +
       facet_wrap(~Variable, ncol = 1, scales = "free_y") +
-      theme_minimal()
+      theme_minimal() +
+      coord_cartesian(xlim = as.POSIXct(plotRange(), origin = "1970-01-01"), expand = FALSE)
     
     if (length(filtredSpatialData()) > 1){
       selData <- filtredSpatialData() %>%
@@ -315,6 +319,18 @@ shinyServer(function(input, output, session) {
         geom_smooth(data = selData, se = FALSE, col = "red", alpha = .35, na.rm = TRUE)
     }
     return(timePlot)
+  })
+  
+  observeEvent(input$timePlot_dblclick, {
+    brush <- input$timePlot_brush
+    if (!is.null(brush)) {
+      plotRange(c(brush$xmin, brush$xmax))
+    } else {
+      plotRange(c(
+        "2016-01-01 01:00:00 UTC",
+        "2017-01-01 00:00:00 UTC"
+      ))
+    }
   })
   
   
